@@ -33,6 +33,12 @@ src/
 
 ## 🚀 Funcionalidades
 
+### 🌐 Importação Automática de Resultados
+- **NOVO**: Busca automática dos resultados da API oficial da Caixa
+- Importação de sorteios históricos (10, 50, 100, 500+)
+- Atualização incremental (não duplica registros)
+- Conversão automática de formatos
+
 ### Análise Estatística
 - Cálculo de frequência de números
 - Identificação de números atrasados
@@ -96,7 +102,12 @@ Gera uma sugestão de aposta baseada em análise estatística.
 # Instalar dependências
 npm install
 
-# Popular dados de exemplo
+# NOVO: Importar resultados reais da Caixa
+npm run import-draws           # Importa últimos 50 sorteios
+npm run import-draws 100        # Importa últimos 100 sorteios
+npm run import-draws 500        # Importa últimos 500 sorteios
+
+# OU usar dados de exemplo
 npm run seed
 
 # Compilar TypeScript

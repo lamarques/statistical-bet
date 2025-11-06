@@ -10,11 +10,21 @@ Após iniciar o servidor, acesse a **documentação Swagger**:
 
 ## Começar a Usar em 3 Passos
 
-### 1️⃣ Popular com Dados de Exemplo
+### 1️⃣ Importar Resultados Reais da Caixa
+```bash
+npm run import-draws 50
+```
+Importa os últimos 50 sorteios da API oficial da Caixa Econômica Federal.
+
+**Outras opções**:
+- `npm run import-draws` (padrão: 50 sorteios)
+- `npm run import-draws 100` (100 sorteios)
+- `npm run import-draws 500` (500 sorteios - mais lento, mas melhor análise)
+
+**OU use dados de exemplo**:
 ```bash
 npm run seed
 ```
-Isso criará 10 sorteios de exemplo no arquivo `data/draws.json`.
 
 ### 2️⃣ Testar Geração de Apostas (Local)
 ```bash

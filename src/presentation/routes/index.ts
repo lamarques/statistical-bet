@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { SaveDrawController } from '../controllers/SaveDrawController';
 import { GetBetSuggestionController } from '../controllers/GetBetSuggestionController';
+import { ImportDrawsController } from '../controllers/ImportDrawsController';
 import { SaveDrawHistoryUseCase } from '../../application/use-cases/SaveDrawHistoryUseCase';
 import { GenerateBetSuggestionUseCase } from '../../application/use-cases/GenerateBetSuggestionUseCase';
 import { StatisticsService } from '../../application/services/StatisticsService';
@@ -25,6 +26,7 @@ export function createRouter(): Router {
   const getBetSuggestionController = new GetBetSuggestionController(
     generateBetSuggestionUseCase
   );
+  const importDrawsController = new ImportDrawsController();
 
   /**
    * @swagger
@@ -206,6 +208,90 @@ export function createRouter(): Router {
    *                   example: Erro ao processar sugestão
    */
   router.get('/suggestions', (req, res) => getBetSuggestionController.handle(req, res));
+
+  /**
+   * @swagger
+   * /api/draws/import:
+   *   post:
+   *     tags:
+   *       - Sorteios
+   *     summary: Importar resultados da API da Caixa
+   *     description: |
+   *       Importa resultados automaticamente da API oficial da Caixa Econômica Federal.
+   *       
+   *       **Funcionalidades:**
+   *       - Busca os últimos N sorteios da lotofácil
+   *       - Não duplica registros existentes
+   *       - Converte automaticamente os formatos
+   *       - Retorna estatísticas da importação
+   *     requestBody:
+   *       required: false
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               count:
+   *                 type: integer
+   *                 description: Quantidade de sorteios a importar (1-1000)
+   *                 default: 50
+   *                 minimum: 1
+   *                 maximum: 1000
+   *                 example: 100
+   *     responses:
+   *       200:
+   *         description: Importação concluída com sucesso
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   example: Importação concluída
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     requested:
+   *                       type: integer
+   *                       example: 100
+   *                     fetched:
+   *                       type: integer
+   *                       example: 100
+   *                     saved:
+   *                       type: integer
+   *                       example: 95
+   *                     skipped:
+   *                       type: integer
+   *                       example: 5
+   *                     errors:
+   *                       type: integer
+   *                       example: 0
+   *                     totalInDatabase:
+   *                       type: integer
+   *                       example: 120
+   *       400:
+   *         description: Parâmetro inválido
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 error:
+   *                   type: string
+   *                   example: "O campo count deve ser um número entre 1 e 1000"
+   *       500:
+   *         description: Erro ao importar
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 error:
+   *                   type: string
+   *                   example: Erro ao conectar com a API da Caixa
+   */
+  router.post('/draws/import', (req, res) => importDrawsController.handle(req, res));
 
   return router;
 }

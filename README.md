@@ -2,6 +2,14 @@
 
 Sistema gerador de apostas para Lotofácil baseado em análise estatística de resultados históricos.
 
+## 📖 Documentação da API
+
+A API possui documentação interativa completa usando **Swagger/OpenAPI**.
+
+Após iniciar o servidor, acesse:
+- **Swagger UI**: http://localhost:3000/api-docs
+- **API Base URL**: http://localhost:3000/api
+
 ## 🏗️ Arquitetura
 
 O projeto foi desenvolvido seguindo os princípios de **Domain-Driven Design (DDD)**:
@@ -88,11 +96,19 @@ Gera uma sugestão de aposta baseada em análise estatística.
 # Instalar dependências
 npm install
 
+# Popular dados de exemplo
+npm run seed
+
 # Compilar TypeScript
 npm run build
 
 # Executar em modo desenvolvimento
 npm run dev
+# Servidor: http://localhost:3000
+# Swagger: http://localhost:3000/api-docs
+
+# Testar geração local (sem API)
+npm run test-api
 
 # Executar em produção
 npm start

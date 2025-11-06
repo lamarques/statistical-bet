@@ -1,5 +1,13 @@
 # 🚀 Guia Rápido - Lotofácil Bet Generator
 
+## 📖 Documentação Interativa
+
+Após iniciar o servidor, acesse a **documentação Swagger**:
+- **URL**: http://localhost:3000/api-docs
+- Interface interativa para testar todos os endpoints
+- Exemplos de requisições e respostas
+- Schemas completos de dados
+
 ## Começar a Usar em 3 Passos
 
 ### 1️⃣ Popular com Dados de Exemplo
@@ -18,7 +26,11 @@ Gera uma sugestão de aposta e mostra a análise estatística no terminal.
 ```bash
 npm run dev
 ```
-Inicia o servidor na porta 3000. Acesse: http://localhost:3000
+Inicia o servidor na porta 3000.
+
+**URLs Importantes**:
+- API: http://localhost:3000/api
+- Swagger: http://localhost:3000/api-docs
 
 ---
 

@@ -9,9 +9,14 @@
     "seed": "ts-node src/scripts/seed.ts",
     "import-draws": "ts-node src/scripts/import-draws.ts",
     "test-api": "ts-node src/scripts/test-api.ts",
+    "check-setup": "ts-node src/scripts/check-setup.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run -d src/infrastructure/database/ormconfig.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/infrastructure/database/ormconfig.ts"
   },
   "author": "Rogerio Lamarques <rogerio.lamarques@gmail.com>",
   "license": "ISC",
@@ -20,8 +25,11 @@
     "axios": "^1.13.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "mysql2": "^3.11.5",
+    "reflect-metadata": "^0.2.2",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",

@@ -5,13 +5,13 @@ import { ImportDrawsController } from '../controllers/ImportDrawsController';
 import { SaveDrawHistoryUseCase } from '../../application/use-cases/SaveDrawHistoryUseCase';
 import { GenerateBetSuggestionUseCase } from '../../application/use-cases/GenerateBetSuggestionUseCase';
 import { StatisticsService } from '../../application/services/StatisticsService';
-import { JsonDrawRepository } from '../../infrastructure/repositories/JsonDrawRepository';
+import { DrawRepositoryFactory } from '../../infrastructure/repositories/DrawRepositoryFactory';
 
 export function createRouter(): Router {
   const router = Router();
 
-  // Inicializar dependências
-  const drawRepository = new JsonDrawRepository();
+  // Inicializar dependências usando Factory
+  const drawRepository = DrawRepositoryFactory.getRepository();
   const statisticsService = new StatisticsService();
 
   // Use Cases

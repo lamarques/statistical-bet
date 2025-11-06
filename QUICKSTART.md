@@ -1,46 +1,95 @@
-# 🚀 Guia Rápido - Lotofácil Bet Generator
+# 🚀 Quick Start - Lotofácil Bet Generator
 
-## 📖 Documentação Interativa
+## Opções de Execução
 
-Após iniciar o servidor, acesse a **documentação Swagger**:
-- **URL**: http://localhost:3000/api-docs
-- Interface interativa para testar todos os endpoints
-- Exemplos de requisições e respostas
-- Schemas completos de dados
+Escolha o método que preferir:
+1. **Docker Compose (MySQL)** - Recomendado para desenvolvimento
+2. **Local (JSON)** - Mais simples, sem dependências
 
-## Começar a Usar em 3 Passos
+---
 
-### 1️⃣ Importar Resultados Reais da Caixa
+## 🐳 Opção 1: Docker Compose com MySQL
+
+### Pré-requisitos
+- Docker e Docker Compose instalados
+
+### Passo a Passo
+
 ```bash
+# 1. Copiar configuração
+cp .env.example .env
+
+# 2. Instalar dependências
+npm install
+
+# 3. Iniciar containers
+docker-compose up -d
+
+# 4. Ver logs
+docker-compose logs -f app
+
+# Aguarde: ✅ Database connection established successfully
+```
+
+### Importar Dados
+
+```bash
+# Importar da Caixa (100 sorteios reais)
+docker-compose exec app npm run import-draws 100
+
+# OU dados de exemplo
+docker-compose exec app npm run seed
+```
+
+### Acessar
+
+- **API**: http://localhost:3000/api
+- **Swagger**: http://localhost:3000/api-docs
+- **Health**: http://localhost:3000/health
+
+### Comandos Úteis
+
+```bash
+# Status dos containers
+docker-compose ps
+
+# Parar
+docker-compose stop
+
+# Remover tudo (limpa banco)
+docker-compose down -v
+
+# Acessar MySQL
+docker-compose exec mysql mysql -u lotofacil -plotofacil123 lotofacil
+```
+
+---
+
+## 📁 Opção 2: Local com JSON
+
+### Passo a Passo
+
+```bash
+# 1. Instalar dependências
+npm install
+
+# 2. Importar dados reais
 npm run import-draws 50
-```
-Importa os últimos 50 sorteios da API oficial da Caixa Econômica Federal.
 
-**Outras opções**:
-- `npm run import-draws` (padrão: 50 sorteios)
-- `npm run import-draws 100` (100 sorteios)
-- `npm run import-draws 500` (500 sorteios - mais lento, mas melhor análise)
-
-**OU use dados de exemplo**:
-```bash
+# OU usar dados de exemplo
 npm run seed
-```
 
-### 2️⃣ Testar Geração de Apostas (Local)
-```bash
+# 3. Testar localmente
 npm run test-api
-```
-Gera uma sugestão de aposta e mostra a análise estatística no terminal.
 
-### 3️⃣ Iniciar API (Servidor Web)
-```bash
+# 4. Iniciar servidor
 npm run dev
 ```
-Inicia o servidor na porta 3000.
 
-**URLs Importantes**:
-- API: http://localhost:3000/api
-- Swagger: http://localhost:3000/api-docs
+### Acessar
+
+- **API**: http://localhost:3000/api
+- **Swagger**: http://localhost:3000/api-docs
 
 ---
 

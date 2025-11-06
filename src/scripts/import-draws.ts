@@ -1,13 +1,20 @@
+import 'reflect-metadata';
 import { LotofacilApiService } from '../infrastructure/services/LotofacilApiService';
-import { JsonDrawRepository } from '../infrastructure/repositories/JsonDrawRepository';
+import { DrawRepositoryFactory } from '../infrastructure/repositories/DrawRepositoryFactory';
 import { Draw } from '../domain/entities/Draw';
+import { initializeDatabase } from '../infrastructure/database/ormconfig';
 
 async function importDraws() {
   console.log('📥 IMPORTADOR DE RESULTADOS DA LOTOFÁCIL\n');
   console.log('🌐 Conectando à API da Caixa Econômica Federal...\n');
 
+  // Initialize database if needed
+  if (process.env.DATABASE_HOST) {
+    await initializeDatabase();
+  }
+
   const apiService = new LotofacilApiService();
-  const repository = new JsonDrawRepository('./data');
+  const repository = DrawRepositoryFactory.getRepository();
 
   try {
     // Verificar quantos sorteios já temos

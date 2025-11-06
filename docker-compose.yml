@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0
+    container_name: lotofacil-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lotofacil
+      MYSQL_USER: lotofacil
+      MYSQL_PASSWORD: lotofacil123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - lotofacil-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lotofacil-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_NAME: lotofacil
+      DATABASE_USER: lotofacil
+      DATABASE_PASSWORD: lotofacil123
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./src:/app/src
+      - ./tsconfig.json:/app/tsconfig.json
+      # Prevent node_modules from being overwritten
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - lotofacil-network
+    command: node dist/index.js
+
+networks:
+  lotofacil-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

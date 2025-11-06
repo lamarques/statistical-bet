@@ -98,52 +98,97 @@ Gera uma sugestão de aposta baseada em análise estatística.
 
 ## 📦 Instalação
 
+### Configuração Local (JSON Storage)
+
 ```bash
 # Instalar dependências
 npm install
 
-# NOVO: Importar resultados reais da Caixa
+# Importar resultados reais da Caixa
 npm run import-draws           # Importa últimos 50 sorteios
 npm run import-draws 100        # Importa últimos 100 sorteios
-npm run import-draws 500        # Importa últimos 500 sorteios
 
 # OU usar dados de exemplo
 npm run seed
-
-# Compilar TypeScript
-npm run build
 
 # Executar em modo desenvolvimento
 npm run dev
 # Servidor: http://localhost:3000
 # Swagger: http://localhost:3000/api-docs
+```
 
-# Testar geração local (sem API)
-npm run test-api
+### Configuração com Docker Compose (MySQL)
 
-# Executar em produção
-npm start
+Para desenvolvimento com banco de dados MySQL:
 
-# Executar testes
-npm test
+```bash
+# 1. Copiar arquivo de ambiente
+cp .env.example .env
 
-# Executar testes em watch mode
-npm run test:watch
+# 2. Iniciar containers (MySQL + Aplicação)
+docker-compose up -d
 
-# Gerar coverage
-npm run test:coverage
+# 3. Aguardar containers iniciarem
+docker-compose logs -f app
+
+# 4. Acessar aplicação
+# Servidor: http://localhost:3000
+# Swagger: http://localhost:3000/api-docs
+
+# 5. Parar containers
+docker-compose down
+
+# 6. Parar e remover volumes (limpa banco de dados)
+docker-compose down -v
+```
+
+A aplicação detecta automaticamente se deve usar MySQL (quando `DATABASE_HOST` está configurado) ou JSON (quando não está).
+
+### Variáveis de Ambiente
+
+Configure o arquivo `.env` para usar MySQL:
+
+```env
+# Application
+NODE_ENV=development
+PORT=3000
+
+# Database (MySQL)
+DATABASE_HOST=localhost     # ou 'mysql' dentro do docker-compose
+DATABASE_PORT=3306
+DATABASE_NAME=lotofacil
+DATABASE_USER=lotofacil
+DATABASE_PASSWORD=lotofacil123
+```
+
+### Comandos TypeORM
+
+```bash
+# Executar migrations
+npm run migration:run
+
+# Reverter última migration
+npm run migration:revert
 ```
 
 ## 🧪 Testes
 
 O projeto inclui testes unitários completos para:
+
 - Value Objects (LotofacilNumbers)
 - Serviços (StatisticsService)
 - Use Cases (SaveDrawHistoryUseCase, GenerateBetSuggestionUseCase)
 
 Execute os testes com:
+
 ```bash
 npm test
+
+# Watch mode
+npm run test:watch
+
+# Coverage
+npm run test:coverage
 ```
 
 ## 📊 Estratégia de Geração de Apostas

@@ -1,3 +1,4 @@
+
 # syntax = docker/dockerfile:1
 
 # Adjust NODE_VERSION as desired
@@ -38,8 +39,13 @@ RUN npm prune --omit=dev
 FROM base
 
 # Copy built application
-COPY --from=build /app /app
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+COPY --from=build /app/package.json /app/package.json
+
+# Create data directory for JSON storage
+RUN mkdir -p /app/data
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD [ "node", "dist/index.js" ]

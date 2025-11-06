@@ -67,6 +67,16 @@ export class JsonDrawRepository implements DrawRepository {
     return draws.find(d => d.contestNumber === contestNumber) || null;
   }
 
+  async findLatest(): Promise<Draw | null> {
+    const draws = await this.findAll();
+    if (draws.length === 0) {
+      return null;
+    }
+    return draws.reduce((latest, current) => 
+      current.contestNumber > latest.contestNumber ? current : latest
+    );
+  }
+
   async count(): Promise<number> {
     const draws = await this.findAll();
     return draws.length;

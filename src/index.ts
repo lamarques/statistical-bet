@@ -10,5 +10,6 @@ app.listen(PORT, () => {
   console.log(`📖 Documentação Swagger em http://localhost:${PORT}/api-docs`);
   console.log(`\nEndpoints disponíveis:`);
   console.log(`  POST http://localhost:${PORT}/api/draws - Salvar resultado de sorteio`);
+  console.log(`  POST http://localhost:${PORT}/api/draws/import - Importar da Caixa`);
   console.log(`  GET  http://localhost:${PORT}/api/suggestions - Obter sugestão de aposta`);
 });

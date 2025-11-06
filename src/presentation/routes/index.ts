@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { SaveDrawController } from '../controllers/SaveDrawController';
 import { GetBetSuggestionController } from '../controllers/GetBetSuggestionController';
+import { GetBetNumbersController } from '../controllers/GetBetNumbersController';
 import { ImportDrawsController } from '../controllers/ImportDrawsController';
 import { SaveDrawHistoryUseCase } from '../../application/use-cases/SaveDrawHistoryUseCase';
 import { GenerateBetSuggestionUseCase } from '../../application/use-cases/GenerateBetSuggestionUseCase';
@@ -24,6 +25,9 @@ export function createRouter(): Router {
   // Controllers
   const saveDrawController = new SaveDrawController(saveDrawHistoryUseCase);
   const getBetSuggestionController = new GetBetSuggestionController(
+    generateBetSuggestionUseCase
+  );
+  const getBetNumbersController = new GetBetNumbersController(
     generateBetSuggestionUseCase
   );
   const importDrawsController = new ImportDrawsController();
@@ -208,6 +212,55 @@ export function createRouter(): Router {
    *                   example: Erro ao processar sugestão
    */
   router.get('/suggestions', (req, res) => getBetSuggestionController.handle(req, res));
+
+  /**
+   * @swagger
+   * /api/bet/numbers:
+   *   get:
+   *     tags:
+   *       - Apostas
+   *     summary: Obter números da aposta sugerida
+   *     description: Retorna apenas os 15 números que devem ser usados na aposta atual, sem análise estatística detalhada
+   *     responses:
+   *       200:
+   *         description: Números da aposta retornados com sucesso
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 numbers:
+   *                   type: array
+   *                   description: Array com 15 números ordenados
+   *                   items:
+   *                     type: integer
+   *                     minimum: 1
+   *                     maximum: 25
+   *                   minItems: 15
+   *                   maxItems: 15
+   *                   example: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+   *       404:
+   *         description: Sem histórico de sorteios
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 error:
+   *                   type: string
+   *                   example: Não há histórico de sorteios para gerar sugestões
+   *       500:
+   *         description: Erro interno do servidor
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 error:
+   *                   type: string
+   *                   example: Erro ao processar sugestão
+   */
+  router.get('/bet/numbers', (req, res) => getBetNumbersController.handle(req, res));
 
   /**
    * @swagger
